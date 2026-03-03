@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,23 +30,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             YapperTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
+                    ChatScreen(
+                        modifier = Modifier.padding(padding),
+                        onTextChange = {  },
+                        onSendClick = {  }
                     )
                 }
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
 }
 
 @Composable
@@ -76,6 +68,11 @@ fun ChatScreen(
                 modifier = modifier.weight(1f),
                 placeholder = {
                     Text(text = "Type your message here...")
+                },
+
+                //send button
+                trailingIcon = {
+                    Text(text = "Send")
                 }
             )
         }
@@ -83,6 +80,8 @@ fun ChatScreen(
 
     }
 }
+
+
 
 @Composable
 @Preview(showBackground = true)
