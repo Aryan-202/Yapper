@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.chatbot.yapper.ui.theme.YapperTheme
+import com.google.ai.client.generativeai.GenerativeModel
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +56,14 @@ fun ChatScreen(
 ) {
     var inputText by remember { mutableStateOf("") }
     val chatHistory = remember { mutableStateListOf<Message>() }
+    val coroutineScope = rememberCoroutineScope()
+
+    val generativeModel = remember {
+        GenerativeModel(
+            modelName = "gemini-3-flash-preview",
+            apiKey = BuildConfig.GEMINI_API_KEY
+        )
+    }
 
     Column(
         modifier = modifier
@@ -95,8 +106,20 @@ fun ChatScreen(
                             .padding(end = 16.dp)
                             .clickable {
                                 if (inputText.isNotBlank()) {
-                                    chatHistory.add(0, Message(text = inputText, isFromUser = true))
+                                    val userText = inputText
+                                    chatHistory.add(0, Message(text = userText, isFromUser = true))
                                     inputText = ""
+
+                                    coroutineScope.launch {
+                                        try {
+                                            val response = generativeModel.generateContent(userText)
+                                            response.text?.let { outputText ->
+                                                chatHistory.add(0, Message(text = outputText, isFromUser = false))
+                                            }
+                                        } catch (e: Exception) {
+                                            chatHistory.add(0, Message(text = "Error: ${e.localizedMessage}", isFromUser = false))
+                                        }
+                                    }
                                 }
                             }
                     )
@@ -121,7 +144,7 @@ fun ChatMessage(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp),
-        horizontalArrangement = if (isFromUser) Arrangement.End else Arrangement.Start
+            horizontalArrangement = if (isFromUser) Arrangement.End else Arrangement.Start
     ) {
         Text(
             text = text,
