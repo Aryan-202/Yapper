@@ -1,19 +1,21 @@
-# yapper 
+# Yapper
 
-A modern, fast, and responsive Android chatbot application powered by the Google Gemini API. Built entirely with Kotlin and Jetpack Compose, yapper demonstrates modern Android development practices including declarative UI, state management, and asynchronous network handling.
+A lightweight Android chatbot powered by Google's Gemini API, built with Kotlin and Jetpack Compose.
 
 ## Features
+- Real-time AI conversations using Gemini 1.5 Flash
+- Clean Material Design 3 UI with dark/light theme support
+- Asynchronous operations with Kotlin Coroutines
+- Secure API key management via local.properties
 
-* **Real-time AI Chat:** Seamless conversational interface powered by the `gemini-1.5-flash` model.
-* **Modern UI/UX:** Clean, responsive design built with Jetpack Compose (`LazyColumn`, `Scaffold`, custom theming).
-* **Asynchronous Processing:** Utilizes Kotlin Coroutines for non-blocking network requests and smooth UI rendering.
-* **Secure Key Management:** Implements `BuildConfig` and `local.properties` to safely manage API credentials.
+## Quick Start
+1. Clone the repo
+2. Get a free API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+3. Add `GEMINI_API_KEY=your_key` to `local.properties`
+4. Build and run (min SDK 24)
 
+## Tech Stack
+Kotlin • Jetpack Compose • Coroutines • Gemini API • Gradle KTS
 
-## Getting Started
-
-To run this project locally, you will need Android Studio and a free Google Gemini API key.
-
-### 1. Clone the repository
-```bash
-git clone [https://github.com/Aryan-202/yapper.git](https://github.com/Aryan-202/yapper.git)
+## License
+Apache 2.0
